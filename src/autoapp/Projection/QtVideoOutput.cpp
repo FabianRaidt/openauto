@@ -19,7 +19,10 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QScreen>
+<<<<<<< HEAD
 #include <mutex>
+=======
+>>>>>>> 97e0ce3 (Pi5 fixes: Disable OMX on Pi5 + fullscreen video projection fix)
 #include <f1x/openauto/autoapp/Projection/QtVideoOutput.hpp>
 #include <f1x/openauto/Common/Log.hpp>
 
@@ -100,12 +103,19 @@ void QtVideoOutput::write(uint64_t, const aasdk::common::DataConstBuffer& buffer
 
 void QtVideoOutput::onStartPlayback()
 {
+<<<<<<< HEAD
     OPENAUTO_LOG(info) << "[QtVideoOutput] onStartPlayback()";
     
+=======
+    const QScreen* primaryScreen = QGuiApplication::primaryScreen();
+    const QRect screenGeometry = primaryScreen == nullptr ? QRect() : primaryScreen->geometry();
+
+>>>>>>> 97e0ce3 (Pi5 fixes: Disable OMX on Pi5 + fullscreen video projection fix)
     videoWidget_->setAttribute(Qt::WA_OpaquePaintEvent, true);
     videoWidget_->setAttribute(Qt::WA_NoSystemBackground, true);
     videoWidget_->setAspectRatioMode(Qt::IgnoreAspectRatio);
     videoWidget_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+<<<<<<< HEAD
     
     // Get the physical screen geometry and set widget to exactly match it
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -124,6 +134,18 @@ void QtVideoOutput::onStartPlayback()
     videoWidget_->raise();
     videoWidget_->show();
     videoWidget_->setFocus();
+=======
+    if(!screenGeometry.isNull())
+    {
+        videoWidget_->setGeometry(screenGeometry);
+    }
+    videoWidget_->showFullScreen();
+    if(!screenGeometry.isNull())
+    {
+        videoWidget_->setGeometry(screenGeometry);
+    }
+    videoWidget_->raise();
+>>>>>>> 97e0ce3 (Pi5 fixes: Disable OMX on Pi5 + fullscreen video projection fix)
     videoWidget_->activateWindow();
 
     // Connect state change signals to track when player is ready
